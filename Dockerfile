@@ -11,6 +11,7 @@ MAINTAINER shijh666
 # Set default environment variables
 # -----------------------------------------------------------------------------
 ENV ROOT_PASSWORD passwd
+ENV SSR_PORT 1000
 ENV	SSR_PASSWORD passwd
 ENV	SSR_METHOD rc4-md5
 ENV	SSR_PROTOCOL auth_sha1_v4
@@ -70,14 +71,14 @@ RUN cd /root/ && \
 	cp -nf shadowsocksr/config.json shadowsocksr/shadowsocks/user-config.json
 	
 RUN sed -i \
-	-e 's/"server_port".*/"server_port": 1000,/' \
+	-e 's/"server_port".*/"server_port": '$SSR_PORT',/' \
 	-e 's/"password".*/"password": "'$SSR_PASSWORD'",/' \
 	-e 's/"method".*/"method": "'$SSR_METHOD'",/' \
 	-e 's/"protocol".*/"protocol": "'$SSR_PROTOCOL'",/' \
 	-e 's/"obfs".*/"obfs": "'$SSR_OBFS'",/' \
 	/root/shadowsocksr/shadowsocks/user-config.json
 	
-EXPOSE 1000
+EXPOSE $SSR_PORT
 	
 # -----------------------------------------------------------------------------
 # Configure supervisor
