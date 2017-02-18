@@ -1,35 +1,57 @@
-FROM centos:6.7
+# =============================================================================
+# shijh666/centos-ssh
+#
+# CentOS 7.3.1611 x86_64 - SSH / SSR / Net Speeder.
+#
+# =============================================================================
 
-##########################################################################
-### update glibc-common for locale files
-RUN yum update -y glibc-common
+FROM centos:7.3.1611
 
-##########################################################################
-# all yum installations here
-RUN yum install -y sudo passwd openssh-server openssh-clients tar screen crontabs strace telnet perl libpcap bc patch ntp dnsmasq unzip pax which
+MAINTAINER shijh666
 
-##########################################################################
-# add epel repository
-RUN rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+# -----------------------------------------------------------------------------
+# Base Install + Import the RPM GPG keys for Repositories
+# -----------------------------------------------------------------------------
 
-RUN (yum install -y hiera lsyncd sshpass rng-tools)
+RUN rpm --rebuilddb \
+	&& rpm --import \
+		http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7 \
+	&& rpm --import \
+		https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 \
+	&& rpm --import \
+		https://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY \
+	&& yum -y install \
+		passwd \
+		openssh-server \
+		openssh-clients \
+		screen \
+		python-setuptools \
+		git
+		
+# -----------------------------------------------------------------------------
+# Configure SSH
+# -----------------------------------------------------------------------------
 
-# start sshd to generate host keys, patch sshd_config and enable yum repos
-RUN (service sshd start; \
-     sed -i 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config; \
-     sed -i 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config; \
-     sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config; \
-     sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Base.repo)
+RUN sed -i \
+	-e 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' \
+	/etc/ssh/sshd_config
 
-RUN (mkdir -p /root/.ssh/; \
-     rm -f /var/lib/rpm/.rpm.lock; \
-     echo "StrictHostKeyChecking=no" > /root/.ssh/config; \
-     echo "UserKnownHostsFile=/dev/null" >> /root/.ssh/config)
+RUN mkdir -p /root/.ssh/ \
+	&& echo "StrictHostKeyChecking=no" > /root/.ssh/config \
+	&& echo "UserKnownHostsFile=/dev/null" >> /root/.ssh/config
 
-
-##########################################################################
-# passwords 
-RUN echo "root:password" | chpasswd
+RUN echo "root:${ROOT_PASSWORD:-passwd}" | chpasswd
 
 EXPOSE 22
-CMD service crond start; /usr/sbin/sshd -D
+
+# -----------------------------------------------------------------------------
+# Install supervisor
+# -----------------------------------------------------------------------------
+
+RUN easy_install supervisor
+
+# -----------------------------------------------------------------------------
+# Copy files into place
+# -----------------------------------------------------------------------------
+
+CMD /usr/sbin/sshd -D
