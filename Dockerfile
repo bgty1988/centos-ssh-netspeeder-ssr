@@ -10,14 +10,16 @@ MAINTAINER shijh666
 # -----------------------------------------------------------------------------
 # Set default environment variables
 # -----------------------------------------------------------------------------
-ENV ROOT_PASSWORD passwd
-ENV SVD_PORT 1080
+ENV SSHD_PORT 22
 ENV SSR_PORT 1000
-ENV	SSR_PASSWORD passwd
-ENV	SSR_METHOD rc4-md5
-ENV	SSR_PROTOCOL auth_sha1_v4
-ENV	SSR_OBFS tls1.2_ticket_auth
-	
+ENV SVD_PORT 1080
+
+# -----------------------------------------------------------------------------
+# Copy files into container
+# -----------------------------------------------------------------------------
+ADD etc /etc/
+ADD root /root/
+
 # -----------------------------------------------------------------------------
 # Install necessary packages
 # -----------------------------------------------------------------------------
@@ -34,12 +36,11 @@ RUN yum update -y && \
 		git && \
 	yum clean all
 	
-RUN easy_install supervisor
-
 # -----------------------------------------------------------------------------
 # Configure SSH
 # -----------------------------------------------------------------------------
 RUN sed -i \
+	-e 's/^#\?Port 22/Port '$SSHD_PORT'/g' \
 	-e 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' \
 	-e 's/^#\?UsePAM.*/UsePAM no/g' \
 	/etc/ssh/sshd_config
@@ -48,9 +49,7 @@ RUN ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N ''
 RUN ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
 RUN ssh-keygen -q -t dsa -f /etc/ssh/ssh_host_ed25519_key  -N ''
 
-RUN echo "root:$ROOT_PASSWORD" | chpasswd
-
-EXPOSE 22
+EXPOSE $SSHD_PORT
 
 # -----------------------------------------------------------------------------
 # Install NetSpeeder
@@ -65,27 +64,19 @@ RUN cd /root/ && \
 	rm -rf net-speeder/
 	
 # -----------------------------------------------------------------------------
-# Configure ShadowsocksR
+# Install ShadowsocksR
 # -----------------------------------------------------------------------------
 RUN cd /root/ && \
 	git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git && \
 	cp -nf shadowsocksr/config.json shadowsocksr/shadowsocks/user-config.json
 	
-RUN sed -i \
-	-e 's/"server_port".*/"server_port": '$SSR_PORT',/' \
-	-e 's/"password".*/"password": "'$SSR_PASSWORD'",/' \
-	-e 's/"method".*/"method": "'$SSR_METHOD'",/' \
-	-e 's/"protocol".*/"protocol": "'$SSR_PROTOCOL'",/' \
-	-e 's/"obfs".*/"obfs": "'$SSR_OBFS'",/' \
-	/root/shadowsocksr/shadowsocks/user-config.json
-	
 EXPOSE $SSR_PORT
 	
 # -----------------------------------------------------------------------------
-# Configure supervisor
+# Install supervisor
 # -----------------------------------------------------------------------------
-ADD etc /etc/
+RUN easy_install supervisor
 
 EXPOSE $SVD_PORT
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/root/sys_init.sh"]
