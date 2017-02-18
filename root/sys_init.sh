@@ -16,7 +16,3 @@ sed -i \
 	-e 's/"obfs".*/"obfs": "'${SSR_OBFS:-tls1.2_ticket_auth}'",/' \
 	/root/shadowsocksr/shadowsocks/user-config.json
 	
-# -----------------------------------------------------------------------------
-# Start supervisor
-# -----------------------------------------------------------------------------
-supervisord -c /etc/supervisord.conf
