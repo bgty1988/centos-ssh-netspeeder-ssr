@@ -69,7 +69,7 @@ RUN cd /root/ && \
 	git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git && \
 	cp -nf shadowsocksr/config.json shadowsocksr/shadowsocks/user-config.json
 	
-#RUN sed -i \
+RUN sed -i \
 	-e 's/"server_port".*/"server_port": 1000,/' \
 	-e 's/"password".*/"password": "'$SSR_PASSWORD'",/' \
 	-e 's/"method".*/"method": "'$SSR_METHOD'",/' \
