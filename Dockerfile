@@ -87,4 +87,5 @@ ADD etc/supervisord.d /etc/supervisord.d/
 
 #EXPOSE 1080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+#CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
