@@ -10,11 +10,11 @@ MAINTAINER shijh666
 # -----------------------------------------------------------------------------
 # Set default environment variables
 # -----------------------------------------------------------------------------
-ENV ROOT_PASSWORD="passwd" \
-	SSR_PASSWORD="passwd" \
-	SSR_METHOD="rc4-md5" \
-	SSR_PROTOCOL="auth_sha1_v4" \
-	SSR_OBFS="tls1.2_ticket_auth"
+ENV ROOT_PASSWORD passwd \
+	SSR_PASSWORD passwd \
+	SSR_METHOD rc4-md5 \
+	SSR_PROTOCOL auth_sha1_v4 \
+	SSR_OBFS tls1.2_ticket_auth
 	
 # -----------------------------------------------------------------------------
 # Install necessary packages
@@ -87,6 +87,4 @@ ADD etc/supervisord.d /etc/supervisord.d/
 
 #EXPOSE 1080
 
-#CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
-#CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
-CMD supervisord -c /etc/supervisord.conf
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
