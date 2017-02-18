@@ -19,4 +19,4 @@ sed -i \
 # -----------------------------------------------------------------------------
 # Start supervisor
 # -----------------------------------------------------------------------------
-#supervisord -c /etc/supervisord.conf
+nohup supervisord -c /etc/supervisord.conf &
