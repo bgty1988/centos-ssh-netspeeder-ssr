@@ -54,30 +54,30 @@ EXPOSE 22
 # Install NetSpeeder
 # -----------------------------------------------------------------------------
 
-RUN cd /root/ && \
-	git clone -b master https://github.com/snooda/net-speeder.git && \
-	cd net-speeder/ && \
-	sh build.sh && \
-	cp -nf net_speeder /usr/bin/ && \
-	cd /root/ && \
-	rm -rf net-speeder/
+#RUN cd /root/ && \
+#	git clone -b master https://github.com/snooda/net-speeder.git && \
+#	cd net-speeder/ && \
+#	sh build.sh && \
+#	cp -nf net_speeder /usr/bin/ && \
+#	cd /root/ && \
+#	rm -rf net-speeder/
 	
 # -----------------------------------------------------------------------------
 # Configure ShadowsocksR
 # -----------------------------------------------------------------------------
-RUN cd /root/ && \
-	git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git && \
-	cp -nf shadowsocksr/config.json shadowsocksr/shadowsocks/user-config.json
+#RUN cd /root/ && \
+#	git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git && \
+#	cp -nf shadowsocksr/config.json shadowsocksr/shadowsocks/user-config.json
 	
-RUN sed -i \
-	-e 's/"server_port".*/"server_port": 1000,/' \
-	-e 's/"password".*/"password": "'$SSR_PASSWORD'",/' \
-	-e 's/"method".*/"method": "'$SSR_METHOD'",/' \
-	-e 's/"protocol".*/"protocol": "'$SSR_PROTOCOL'",/' \
-	-e 's/"obfs".*/"obfs": "'$SSR_OBFS'",/' \
-	/root/shadowsocksr/shadowsocks/user-config.json
+#RUN sed -i \
+#	-e 's/"server_port".*/"server_port": 1000,/' \
+#	-e 's/"password".*/"password": "'$SSR_PASSWORD'",/' \
+#	-e 's/"method".*/"method": "'$SSR_METHOD'",/' \
+#	-e 's/"protocol".*/"protocol": "'$SSR_PROTOCOL'",/' \
+#	-e 's/"obfs".*/"obfs": "'$SSR_OBFS'",/' \
+#	/root/shadowsocksr/shadowsocks/user-config.json
 	
-EXPOSE 1000
+#EXPOSE 1000
 	
 # -----------------------------------------------------------------------------
 # Configure supervisor
@@ -85,7 +85,6 @@ EXPOSE 1000
 ADD etc/supervisord.conf /etc/
 ADD etc/supervisord.d /etc/supervisord.d/
 
-EXPOSE 1080
+#EXPOSE 1080
 
-#CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
-CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
