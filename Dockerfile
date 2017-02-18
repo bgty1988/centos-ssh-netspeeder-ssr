@@ -27,8 +27,12 @@ RUN yum update -y && \
 
 RUN sed -i \
 	-e 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' \
-	-e 's/^#\?UsePAM yes/UsePAM no/g' \
+	-e 's/^#\?UsePAM.*/UsePAM no/g' \
 	/etc/ssh/sshd_config
+
+RUN ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N ''
+RUN ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
+RUN ssh-keygen -q -t dsa -f /etc/ssh/ssh_host_ed25519_key  -N ''
 
 RUN echo "root:${ROOT_PASSWORD:-passwd}" | chpasswd
 
@@ -43,5 +47,7 @@ RUN easy_install supervisor
 # -----------------------------------------------------------------------------
 # Copy files into place
 # -----------------------------------------------------------------------------
+
+
 
 CMD ["/usr/sbin/sshd", "-D"]
