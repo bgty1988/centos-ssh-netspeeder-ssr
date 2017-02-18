@@ -15,6 +15,9 @@ ENV SSHD_PORT 22
 ENV SSR_PORT 1000
 ENV SVD_PORT 1080
 
+ENV DEFAULT_USERNAME root
+ENV DEFAULT_PASSWORD password
+
 # -----------------------------------------------------------------------------
 # Copy files into container
 # -----------------------------------------------------------------------------
@@ -80,5 +83,5 @@ RUN easy_install supervisor
 
 EXPOSE $SVD_PORT
 
-CMD sh /root/sys_init.sh; \
+CMD sh /root/sys_cfg.sh; \
 	supervisord -c /etc/supervisord.conf
