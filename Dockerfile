@@ -11,6 +11,7 @@ MAINTAINER shijh666
 # Set default environment variables
 # -----------------------------------------------------------------------------
 ENV ROOT_PASSWORD passwd
+ENV SVD_PORT 1080
 ENV SSR_PORT 1000
 ENV	SSR_PASSWORD passwd
 ENV	SSR_METHOD rc4-md5
@@ -83,9 +84,8 @@ EXPOSE $SSR_PORT
 # -----------------------------------------------------------------------------
 # Configure supervisor
 # -----------------------------------------------------------------------------
-ADD etc/supervisord.conf /etc/
-ADD etc/supervisord.d /etc/supervisord.d/
+ADD etc /etc/
 
-#EXPOSE 1080
+EXPOSE $SVD_PORT
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"; "echo" "$ROOT_PASSWORD"]
