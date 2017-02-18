@@ -88,5 +88,4 @@ ADD etc /etc/
 
 EXPOSE $SVD_PORT
 
-#CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
-CMD /usr/bin/supervisord -c /etc/supervisord.conf; echo "ROOT_PASSWORD:$ROOT_PASSWORD" > /root/test; echo "ENV_ROOT_PASSWORD:$ENV_ROOT_PASSWORD" >> /root/test
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
