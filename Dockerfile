@@ -53,13 +53,14 @@ EXPOSE 22
 # -----------------------------------------------------------------------------
 # Install NetSpeeder
 # -----------------------------------------------------------------------------
-RUN cd && \
-	git clone -b master https://github.com/snooda/net-speeder.git && \
-	cd net-speeder/ && \
-	sh build.sh && \
-	cp -nf net_speeder /usr/bin/ && \
-	cd && \
-	rm -rf net-speeder/
+
+#RUN cd && \
+#	git clone -b master https://github.com/snooda/net-speeder.git && \
+#	cd net-speeder/ && \
+#	sh build.sh && \
+#	cp -nf net_speeder /usr/bin/ && \
+#	cd && \
+#	rm -rf net-speeder/
 	
 # -----------------------------------------------------------------------------
 # Configure ShadowsocksR
@@ -81,8 +82,8 @@ EXPOSE 1000
 # -----------------------------------------------------------------------------
 # Configure supervisor
 # -----------------------------------------------------------------------------
-ADD etc /etc/
+#ADD etc /etc/
 
 EXPOSE 1080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+#CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
