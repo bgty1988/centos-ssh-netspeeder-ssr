@@ -54,7 +54,7 @@ EXPOSE 22
 # Install NetSpeeder
 # -----------------------------------------------------------------------------
 
-#RUN cd && \
+RUN cd && \
 	git clone -b master https://github.com/snooda/net-speeder.git && \
 	cd net-speeder/ && \
 	sh build.sh && \
