@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 /bin/echo $PATH > /root/test
 /bin/echo $SSR_PORT >> /root/test
