@@ -1,32 +1,25 @@
 # =============================================================================
 # shijh666/centos-ssh
 #
-# CentOS 7.3.1611 x86_64 - SSH / SSR / Net Speeder.
+# CentOS latest - SSH / SSR / Net Speeder.
 #
 # =============================================================================
 
-FROM centos:7.3.1611
+FROM centos:latest
 
 MAINTAINER shijh666
 
 # -----------------------------------------------------------------------------
-# Base Install + Import the RPM GPG keys for Repositories
+# Install necessary packages
 # -----------------------------------------------------------------------------
 
-RUN rpm --rebuilddb \
-	&& rpm --import \
-		http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7 \
-	&& rpm --import \
-		https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 \
-	&& rpm --import \
-		https://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY \
-	&& yum -y install \
-		passwd \
+RUN yum update -y && \
+	yum install -y \
 		openssh-server \
 		openssh-clients \
-		screen \
 		python-setuptools \
-		git
+		git && \
+	yum clean all
 		
 # -----------------------------------------------------------------------------
 # Configure SSH
@@ -34,11 +27,8 @@ RUN rpm --rebuilddb \
 
 RUN sed -i \
 	-e 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' \
+	-e 's/^#\?UsePAM yes/UsePAM no/g' \
 	/etc/ssh/sshd_config
-
-RUN mkdir -p /root/.ssh/ \
-	&& echo "StrictHostKeyChecking=no" > /root/.ssh/config \
-	&& echo "UserKnownHostsFile=/dev/null" >> /root/.ssh/config
 
 RUN echo "root:${ROOT_PASSWORD:-passwd}" | chpasswd
 
@@ -54,4 +44,4 @@ RUN easy_install supervisor
 # Copy files into place
 # -----------------------------------------------------------------------------
 
-CMD /usr/sbin/sshd -D
+CMD ["/usr/sbin/sshd", "-D"]
