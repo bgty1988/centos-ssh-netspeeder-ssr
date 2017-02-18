@@ -79,4 +79,4 @@ RUN easy_install supervisor
 
 EXPOSE $SVD_PORT
 
-CMD ["/root/sys_init.sh"]
+CMD ["/bin/sh" "/root/sys_init.sh"]
