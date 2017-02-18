@@ -10,11 +10,11 @@ MAINTAINER shijh666
 # -----------------------------------------------------------------------------
 # Set default environment variables
 # -----------------------------------------------------------------------------
-ENV ROOT_PASSWORD passwd \
-	SSR_PASSWORD passwd \
-	SSR_METHOD rc4-md5 \
-	SSR_PROTOCOL auth_sha1_v4 \
-	SSR_OBFS tls1.2_ticket_auth
+ENV ROOT_PASSWORD passwd
+ENV	SSR_PASSWORD passwd
+ENV	SSR_METHOD rc4-md5
+ENV	SSR_PROTOCOL auth_sha1_v4
+ENV	SSR_OBFS tls1.2_ticket_auth
 	
 # -----------------------------------------------------------------------------
 # Install necessary packages
