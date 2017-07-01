@@ -84,4 +84,4 @@ RUN easy_install supervisor
 EXPOSE $SVD_PORT
 
 CMD sh /root/sys_cfg.sh; \
-	supervisord -c /etc/supervisord.conf
+	supervisord -c /etc/supervisord.conf &
