@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-echo "Running sys_cfg.sh" > /root/log
-echo -e "$ROOT_PASSWORD\n$SSR_PASSWORD\n$SVD_PASSWORD" > /root/variables
-
 # -----------------------------------------------------------------------------
 # Configure root password
 # -----------------------------------------------------------------------------
 echo "root:${ROOT_PASSWORD:-$DEFAULT_PASSWORD}" | chpasswd
+
+echo "$SVD_PORT" > svd_port
+echo "$SVD_PASSWORD" > svd_passwd
 
 # -----------------------------------------------------------------------------
 # Configure ShadowsocksR

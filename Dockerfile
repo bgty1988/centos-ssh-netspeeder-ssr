@@ -81,8 +81,6 @@ EXPOSE $SSR_PORT
 # -----------------------------------------------------------------------------
 RUN easy_install supervisor
 
-RUN echo -e "$ROOT_PASSWORD\n$SSR_PASSWORD\n$SVD_PASSWORD\n$SVD_PORT" > /root/variables_D
-
 EXPOSE $SVD_PORT
 
 CMD sh /root/sys_cfg.sh; \
