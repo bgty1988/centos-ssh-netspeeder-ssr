@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "Running sys_cfg.sh" > /root/log
+echo -e "$ROOT_PASSWORD\n$SSR_PASSWORD\n$SVD_PASSWORD" > /root/variables
+
 # -----------------------------------------------------------------------------
 # Configure root password
 # -----------------------------------------------------------------------------
@@ -24,4 +27,8 @@ sed -i \
 	-e 's/username=.*/username='${SVD_USERNAME:-$DEFAULT_USERNAME}'/' \
 	-e 's/password=.*/password='${SVD_PASSWORD:-$DEFAULT_PASSWORD}'/' \
 	/etc/supervisord.conf
+
+sed -i \
+	-e 's/autostart=.*/autostart='${NET_SPEEDER_AUTOSTART:-true}'/' \
+	/etc/supervisord.d/net_speeder.conf
 	
