@@ -5,8 +5,9 @@
 # -----------------------------------------------------------------------------
 echo "root:${ROOT_PASSWORD:-$DEFAULT_PASSWORD}" | chpasswd
 
-echo "$SVD_PORT" > svd_port
-echo "$SVD_PASSWORD" > svd_passwd
+echo "$SVD_PORT" > /root/svd_port
+echo "$SVD_PASSWORD" > /root/svd_passwd
+env > /root/env
 
 # -----------------------------------------------------------------------------
 # Configure ShadowsocksR
