@@ -71,7 +71,7 @@ RUN cd /root/ && \
 # Install ShadowsocksR
 # -----------------------------------------------------------------------------
 RUN cd /root/ && \
-	git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git && \
+	git clone -b manyuser https://github.com/iMeiji/shadowsocksR.git && \
 	cp -nf shadowsocksr/config.json shadowsocksr/shadowsocks/user-config.json
 	
 EXPOSE $SSR_PORT
